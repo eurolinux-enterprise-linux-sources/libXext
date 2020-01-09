@@ -4,8 +4,8 @@
 
 Summary: X.Org X11 libXext runtime library
 Name: libXext
-Version: 1.3.2
-Release: 2.1%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
+Version: 1.3.3
+Release: 1%{?gitdate:.%{gitdate}git%{gitversion}}%{?dist}
 License: MIT
 Group: System Environment/Libraries
 URL: http://www.x.org
@@ -94,6 +94,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*.3*
 
 %changelog
+* Fri Nov 13 2015 Benjamin Tissoires <benjamin.tissoires@redhat.com> 1.3.3-1
+- libXext 1.3.3
+
 * Wed Feb 12 2014 Adam Jackson <ajax@redhat.com> 1.3.2-2.1
 - Mass rebuild
 
