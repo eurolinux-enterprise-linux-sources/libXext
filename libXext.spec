@@ -1,21 +1,19 @@
 Summary: X.Org X11 libXext runtime library
 Name: libXext
-Version: 1.1
-Release: 3%{?dist}
+Version: 1.3.1
+Release: 2%{?dist}
 License: MIT
 Group: System Environment/Libraries
 URL: http://www.x.org
-BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 Source0: ftp://ftp.x.org/pub/individual/lib/%{name}-%{version}.tar.bz2
-# From upstream, drop if updating to 1.1.1
-Patch1: libXext-1.1-XAllocID.patch
 
 BuildRequires: xorg-x11-proto-devel >= 7.4-23
 BuildRequires: libX11-devel
 BuildRequires: libXau-devel
 BuildRequires: xorg-x11-util-macros
 BuildRequires: autoconf automake libtool pkgconfig
+BuildRequires: xmlto
 
 %description
 X.Org X11 libXext runtime library
@@ -25,17 +23,11 @@ Summary: X.Org X11 libXext development package
 Group: Development/Libraries
 Requires: %{name} = %{version}-%{release}
 
-Requires: libX11-devel pkgconfig
-# xorg-x11-proto-devel is needed by xext.pc
-Requires: xorg-x11-proto-devel >= 7.0-1
-
-
 %description devel
 X.Org X11 libXext development package
 
 %prep
 %setup -q
-%patch1 -p1 
 
 %build
 %configure --disable-static
@@ -48,6 +40,9 @@ make install DESTDIR=$RPM_BUILD_ROOT
 
 # We intentionally don't ship *.la files
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
+
+# do this with %%doc below
+rm -rf $RPM_BUILD_ROOT%{_docdir}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -74,9 +69,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_includedir}/X11/extensions/Xge.h
 %{_includedir}/X11/extensions/dpms.h
 %{_includedir}/X11/extensions/extutil.h
-%{_includedir}/X11/extensions/lbxbuf.h
-%{_includedir}/X11/extensions/lbxbufstr.h
-%{_includedir}/X11/extensions/lbximage.h
 %{_includedir}/X11/extensions/multibuf.h
 %{_includedir}/X11/extensions/security.h
 %{_includedir}/X11/extensions/shape.h
@@ -88,11 +80,31 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man3/*.3*
 
 %changelog
-* Mon Jul 19 2010 Peter Hutterer <peter.hutterer@redhat.com> 1.1-3
-- libXext-1.1-event_vec-smash.patch: drop, this patch is wrong and has been
-  reverted upstream. (#614888)
+* Thu Jul 19 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.1-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_18_Mass_Rebuild
 
-* Thu Dec 03 2009 Peter Hutterer <peter.hutterer@redhat.com> 1.1-2
+* Thu Mar 08 2012 Adam Jackson <ajax@redhat.com> 1.3.1-1
+- libXext 1.3.1
+
+* Fri Jan 13 2012 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.3.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_17_Mass_Rebuild
+
+* Thu Nov 17 2011 Adam Jackson <ajax@redhat.com> 1.3.0-1
+- libXext 1.3.0
+
+* Mon Feb 07 2011 Fedora Release Engineering <rel-eng@lists.fedoraproject.org> - 1.2.0-2
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_15_Mass_Rebuild
+
+* Thu Oct 28 2010 Adam Jackson <ajax@redhat.com> 1.2.0-1
+- libXext 1.2.0
+
+* Tue Aug 24 2010 Adam Tkac <atkac redhat com> 1.1.2-2
+- rebuild to ensure F14 NVR is higher than F13
+
+* Fri Jun 04 2010 Adam Jackson <ajax@redhat.com> 1.1.2-1
+- libXext 1.1.2
+
+* Sat Dec 12 2009 Robert Scheck <robert@fedoraproject.org> 1.1-2
 - libXext-1.1-XAllocID.patch: call XAllocID with the display lock held.
 - libXext-1.1-event_vec-smash.patch: don't smash the event processing vector
   if the server has an older extension version than the client.
